@@ -3,8 +3,6 @@
 **Endiorite Open Source Minecraft Server API**  
 *Created by RemBog*
 
-Welcome to the EndioriteAPI, your gateway to retrieving player statistics from the Endiorite Minecraft server. Currently, this API provides access to **PlayersStats**, with more features coming soon!
-
 ---
 
 ## Players Stats Endpoints
@@ -115,8 +113,7 @@ GET http://play.endiorite.fr:8080/playersStats/top/{topType}?page={page}&limit={
 
 ---
 
-If you have any questions or want to contribute, feel free to reach out or open an issue.
+## Contribution
+API developed free of charge, if you wish to contribute you can send via PayPal to the link below.
 
----
-
-**Enjoy using EndioriteAPI!**
+- https://paypal.me/rembog
