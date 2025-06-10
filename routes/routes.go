@@ -2,10 +2,19 @@ package routes
 
 import (
 	"EndioriteAPI/controllers"
+	"EndioriteAPI/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(r *gin.Engine) {
+	userLink := r.Group("/userLink")
+	{
+		userLink.Use(middleware.KeyAuth())
+
+		userLink.GET("/check/:userId", controllers.CheckUserLink)
+		userLink.POST("/link", controllers.LinkUser)
+	}
+
 	playersStats := r.Group("/playersStats")
 	{
 		playersStats.GET("/getAll", controllers.GetAllPlayersStats)

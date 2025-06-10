@@ -4,6 +4,9 @@
 *Created by RemBog*
 
 ---
+# Open access endpoints
+
+---
 
 ## Players Stats Endpoints
 
@@ -103,6 +106,82 @@ GET http://play.endiorite.fr:8080/playersStats/top/{topType}?page={page}&limit={
   {"username":"RemBog88X","stat":122},
   {"username":"RemBog_88","stat":122}
 ]
+```
+
+---
+# Restricted access endpoints
+**You must obtain authorisation from RemBog or Yass to access the following endpoints.**
+
+---
+
+### Check if the Discord user is linked to an in-game account
+
+```
+GET http://play.endiorite.fr:8080/userLink/check/{userId}
+```
+
+**Path Parameter:**
+- `{userId}` — The Discord user ID
+
+**Example Request:**  
+```
+fetch('http://play.endiorite.fr:8080/userLink/check/629679896670765073', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer SECRET'
+    }
+})
+```
+
+**Response:**
+
+```
+{isLinked: true, username: RemBog88}
+```
+
+---
+
+### Create a request to link a Discord user to an in-game account
+
+```
+POST http://play.endiorite.fr:8080/userLink/link
+```
+
+**Request Body:**
+```
+{
+  userId: {userId}
+  username: {username}
+  code: {code}
+}
+```
+
+**Body Parameters:**
+- `{userId}` — The Discord user ID
+- `{username}` — The user's in-game username
+- `{code}` — The randomly generated 6-digit code
+
+**Example Request:**  
+```
+fetch('http://play.endiorite.fr:8080/userLink/link', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer SECRET'
+    },
+    body: JSON.stringify({
+        userId: 629679896670765073,
+        username: "RemBog88",
+        code: 123456
+    })
+})
+```
+
+**Response:**
+
+```
+"success": true, "message": "Link created successfully."
 ```
 
 ---
