@@ -171,7 +171,7 @@ fetch('http://play.endiorite.fr:8080/userLink/link', {
         'Authorization': 'Bearer SECRET'
     },
     body: JSON.stringify({
-        userId: 629679896670765073,
+        userId: "629679896670765073",
         username: "RemBog88",
         code: 123456
     })
