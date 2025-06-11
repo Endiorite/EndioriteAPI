@@ -186,6 +186,34 @@ fetch('http://play.endiorite.fr:8080/userLink/link', {
 
 ---
 
+### Remove a Discord user's in-game account link
+
+```
+POST http://play.endiorite.fr:8080/userLink/unlink/{userId}
+```
+
+**Path Parameter:**
+- `{userId}` — The Discord user ID
+
+**Example Request:**
+```
+fetch('http://play.endiorite.fr:8080/userLink/unlink/629679896670765073', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer SECRET'
+    }
+})
+```
+
+**Response:**
+
+```
+{"success": true, "message": "Link deleted successfully."}
+```
+
+---
+
 ## Future Updates
 
 - Additional endpoints for server status, world data, and more will be added soon. Stay tuned!

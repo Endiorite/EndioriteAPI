@@ -13,6 +13,7 @@ func SetupRoutes(r *gin.Engine) {
 
 		userLink.GET("/check/:userId", controllers.CheckUserLink)
 		userLink.POST("/link", controllers.LinkUser)
+		userLink.POST("/unlink/:userId", controllers.UnlinkUser)
 	}
 
 	playersStats := r.Group("/playersStats")
