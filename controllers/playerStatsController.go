@@ -1,14 +1,13 @@
 package controllers
 
 import (
-	"database/sql"
-	"fmt"
-	"net/http"
-	"strconv"
-
 	"EndioriteAPI/database"
 	"EndioriteAPI/models"
+	"EndioriteAPI/utils"
+	"database/sql"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func GetAllPlayersStats(c *gin.Context) {
@@ -75,7 +74,7 @@ func GetPlayerStats(c *gin.Context) {
 		&playerStats.PlayingTime,
 	)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Player not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "PlayerMoney not found"})
 		return
 	}
 
@@ -104,23 +103,8 @@ func GetPlayersStatsTopPlayingTime(c *gin.Context) {
 
 func getPlayersStatsTop(c *gin.Context, topType string) {
 
-	order := c.DefaultQuery("order", "desc")
-	if order != "asc" && order != "desc" && order != "ASC" && order != "DESC" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid order parameter"})
-		return
-	}
-
-	page := c.DefaultQuery("page", "1")
-	p, err := strconv.Atoi(page)
-	if err != nil || p <= 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page parameter"})
-		return
-	}
-
-	limit := c.DefaultQuery("limit", "10")
-	l, err := strconv.Atoi(limit)
-	if err != nil || l <= 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid limit parameter"})
+	order, limit, offset, ok := utils.ParseTopParams(c)
+	if !ok {
 		return
 	}
 
@@ -133,20 +117,12 @@ func getPlayersStatsTop(c *gin.Context, topType string) {
 	}
 
 	if !validTopTypes[topType] {
-		c.JSON(400, gin.H{"error": "Invalid topType"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid topType"})
 		return
 	}
 
-	offset := (p - 1) * l
-
-	query := fmt.Sprintf(`
-		SELECT username, %s
-		FROM remstats
-		ORDER BY %s %s
-		LIMIT ? OFFSET ?
-	`, topType, topType, order)
-
-	rows, err := database.DB.Query(query, l, offset)
+	query := fmt.Sprintf(`SELECT username, %s FROM remstats ORDER BY %s %s LIMIT ? OFFSET ?`, topType, topType, order)
+	rows, err := database.DB.Query(query, limit, offset)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving player stats top"})
 		return
@@ -154,26 +130,19 @@ func getPlayersStatsTop(c *gin.Context, topType string) {
 	defer rows.Close()
 
 	type PlayerStat struct {
-		Username string      `json:"username"`
-		Stat     interface{} `json:"stat"`
+		Username string `json:"username"`
+		Stat     int64  `json:"stat"`
 	}
 
-	var results []PlayerStat
+	var playersStatTop []PlayerStat
 
 	for rows.Next() {
-		var username string
-		var stat interface{}
-
-		err := rows.Scan(&username, &stat)
-		if err != nil {
+		var p PlayerStat
+		if err := rows.Scan(&p.Username, &p.Stat); err != nil {
 			continue
 		}
-
-		results = append(results, PlayerStat{
-			Username: username,
-			Stat:     stat,
-		})
+		playersStatTop = append(playersStatTop, p)
 	}
 
-	c.JSON(http.StatusOK, results)
+	c.JSON(http.StatusOK, playersStatTop)
 }
