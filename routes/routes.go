@@ -29,4 +29,17 @@ func SetupRoutes(r *gin.Engine) {
 			playersStatsTop.GET("/playingTime", controllers.GetPlayersStatsTopPlayingTime)
 		}
 	}
+
+	playersCosmetics := r.Group("/playersCosmetics")
+	{
+		playersCosmetics.GET("/getList/:username", controllers.GetPlayerCosmeticsList)
+		playersCosmetics.GET("/getEquippedList/:username", controllers.GetPlayerEquippedCosmeticsList)
+	}
+
+	playersMoney := r.Group("/playersMoney")
+	{
+		playersMoney.GET("/getAll", controllers.GetAllPlayersMoney)
+		playersMoney.GET("/get/:username", controllers.GetPlayerMoney)
+		playersMoney.GET("/top", controllers.GetPlayersMoneyTop)
+	}
 }
