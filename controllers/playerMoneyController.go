@@ -49,7 +49,7 @@ func GetPlayerMoney(c *gin.Context) {
 		return
 	}
 
-	var money int
+	var money float64
 	if err := rows.Scan(&money); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error scanning username money from database."})
 		return
