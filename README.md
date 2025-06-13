@@ -153,7 +153,7 @@ GET http://play.endiorite.fr:8080/playersMoney/get/{username}
 **Path Parameter:**
 - `{username}` — Player's username
 
-**Example Requests:**
+**Example Request:**
 - `http://play.endiorite.fr:8080/playersMoney/get/RemBog88`
 
 **Response:**
@@ -163,7 +163,7 @@ GET http://play.endiorite.fr:8080/playersMoney/get/{username}
 
 ---
 
-### Get Top Players by Stat
+### Get Top Players by Money
 
 ```
 GET http://play.endiorite.fr:8080/playersMoney/top?page={page}&limit={limit}
