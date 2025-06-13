@@ -367,7 +367,7 @@ fetch('http://play.endiorite.fr:8080/userLink/unlink/629679896670765073', {
 
 ## Future Updates
 
-- Additional endpoints for server status, world data, and more will be added soon. Stay tuned!
+- Additional endpoints will be added soon. Stay tuned!
 
 ---
 
